@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDDMediatR", "DDDMediatR\DDDMediatR.csproj", "{4C7A328B-AF60-4631-A721-6B772E7891AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDDAutofac", "DDDAutofac\DDDAutofac.csproj", "{0CA49043-6817-4798-B966-F427ABB2D918}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{4C7A328B-AF60-4631-A721-6B772E7891AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C7A328B-AF60-4631-A721-6B772E7891AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C7A328B-AF60-4631-A721-6B772E7891AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CA49043-6817-4798-B966-F427ABB2D918}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CA49043-6817-4798-B966-F427ABB2D918}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CA49043-6817-4798-B966-F427ABB2D918}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CA49043-6817-4798-B966-F427ABB2D918}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
