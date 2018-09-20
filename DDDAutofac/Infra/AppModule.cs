@@ -4,13 +4,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 
-namespace DDDAutofac.Infra
+namespace DDDAutofac
 {
     public class AppModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
-            base.Load(builder);
+            builder.Register(c => new SingletonQueries())
+                .As<SingletonQueries>()
+                .SingleInstance(); 
+
+            builder.Register(c => new TransientQueries())
+                .As<TransientQueries>()
+                .InstancePerLifetimeScope();
+
         }
 
     }

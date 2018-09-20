@@ -13,7 +13,7 @@ using Microsoft.Extensions.Options;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Autofac.Core.Registration;
-using DDDAutofac.Infra;
+using DDDAutofac;
 
 
 namespace DDDAutofac

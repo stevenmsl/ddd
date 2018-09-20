@@ -10,6 +10,38 @@ namespace DDDAutofac.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        SingletonQueries _single;
+        TransientQueries _transient;
+
+
+        public ValuesController( SingletonQueries single, TransientQueries transient)
+        {
+            _single = single;
+            _transient = transient;
+        }
+
+        /// <summary>
+        /// Should return the same GUID every time
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("singleton")]
+        public string Singleton()
+        {
+            return _single.GetGuid();
+        }
+
+        /// <summary>
+        /// Should return different GUID every time
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("transient")]
+        public string transient()
+        {
+            return  _transient.GetGuid();
+        }
+
+
+
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
