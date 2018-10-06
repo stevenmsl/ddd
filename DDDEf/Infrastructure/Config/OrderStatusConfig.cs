@@ -5,7 +5,7 @@ using DDDEf.Domain.Model.OrderAggregate;
 
 namespace DDDEf.Infrastructure.Config
 {
-    public class OrderStatusEntityConfig : IEntityTypeConfiguration<OrderStatus>
+    public class OrderStatusConfig : IEntityTypeConfiguration<OrderStatus>
     {
         public void Configure(EntityTypeBuilder<OrderStatus> orderStatusConfiguration)
         {

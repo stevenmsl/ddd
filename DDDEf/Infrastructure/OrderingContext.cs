@@ -21,7 +21,7 @@ namespace DDDEf.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new OrderStatusEntityConfig());
+            modelBuilder.ApplyConfiguration(new OrderStatusConfig());
            
         }
 
