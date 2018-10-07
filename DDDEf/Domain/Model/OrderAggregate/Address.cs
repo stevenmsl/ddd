@@ -10,11 +10,16 @@ namespace DDDEf.Domain.Model.OrderAggregate
     public class Address : ValueObject
     {
 
-        public String Street { get; }
-        public String City { get; }
-        public String State { get; }
-        public String Country { get; }
-        public String ZipCode { get; }
+        //Read-only properties are not mapped by convention. 
+        //So, if you declare Street property like the following:
+        //public String Street { get; }
+        //No column will be created to map the Street property in the table created to map the entity type 
+        //that owns an Address type value object.
+        public String Street { get; private set; }
+        public String City { get; private set; }
+        public String State { get; private set; }
+        public String Country { get; private set; }
+        public String ZipCode { get; private set; }
 
         private Address() { }
 

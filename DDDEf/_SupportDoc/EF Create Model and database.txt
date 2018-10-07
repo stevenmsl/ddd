@@ -1,0 +1,4 @@
+﻿::A model file will be created in the “Migrations” folder under the project folder. 
+::The model file name will end with the string you specified after the -name parameter
+::In the following case the model file name will end with the string “Initial”.
+Add-Migration -name Initial
