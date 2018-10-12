@@ -12,3 +12,5 @@
 /DDDHostedService/bin
 /DDDEf/bin
 /DDDEf/obj
+/DDDRabbitMQ/obj
+/DDDRabbitMQ/bin

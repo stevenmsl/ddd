@@ -1,0 +1,31 @@
+﻿Issue: After the installation, if the description of the RabbitMQ windows service is blank, 
+chances are that the service is not properly installed. 
+Solution: Execute the following steps in the Rabbit MQ Command Prompt (sbin dir) one by one:
+SET HOMEDRIVE=C:
+rabbitmq-plugins.bat enable rabbitmq_management
+rabbitmq-service.bat stop
+rabbitmq-service.bat remove
+rabbitmq-service.bat install
+rabbitmq-service.bat start
+
+Issue: You encountered the following error messages while executing rabbitmqctl commands: 
+"The directory name is invalid", or "the filename, directory name 
+or volume label syntax is incorrect" followed by many error messages like “Failed to create cookie file 'h:/.erlang.cookie': enoent”
+Solution: 
+In the RabbitMQ command prompt, run the following:
+SET HOMEDRIVE=C:
+
+Issue: You encountered the following error messages while executing rabbitmqctl commands 
+even though the Rabbit MQ is properly installed and is up and running:
+-	Target node is unreachable (e.g. due to hostname resolution, TCP connection or firewall issues)
+-	CLI tool fails to authenticate with the server (e.g. due to CLI tool's Erlang cookie not matching that of the server)
+-	Target node is not running
+
+Solution: 
+The cookie file (.erlang.cookie) in the home drive folder(C:\ for example) is out-of-sync. 
+Copy the .erlang.cookie from “C:\Windows\System32\config\systemprofile” and overwrite the one in the home drive folder.
+
+
+
+
+

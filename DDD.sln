@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDDAutofac", "DDDAutofac\DD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDDHostedService", "DDDHostedService\DDDHostedService.csproj", "{83967B80-A0B6-4AA8-9F75-BCA60F69EFFE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDDEf", "DDDEf\DDDEf.csproj", "{3B6D2C19-56AA-4A80-921F-4B5FE23CCCC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDDEf", "DDDEf\DDDEf.csproj", "{3B6D2C19-56AA-4A80-921F-4B5FE23CCCC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDDRabbitMQ", "DDDRabbitMQ\DDDRabbitMQ.csproj", "{3AF93140-4A5E-4820-ADD5-00956906BC6A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{3B6D2C19-56AA-4A80-921F-4B5FE23CCCC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B6D2C19-56AA-4A80-921F-4B5FE23CCCC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B6D2C19-56AA-4A80-921F-4B5FE23CCCC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AF93140-4A5E-4820-ADD5-00956906BC6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AF93140-4A5E-4820-ADD5-00956906BC6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AF93140-4A5E-4820-ADD5-00956906BC6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AF93140-4A5E-4820-ADD5-00956906BC6A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
