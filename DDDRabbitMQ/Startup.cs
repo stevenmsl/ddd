@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using RabbitMQ.Client;
 
 namespace DDDRabbitMQ
 {
@@ -38,4 +39,16 @@ namespace DDDRabbitMQ
             app.UseMvc();
         }
     }
+
+    static class CustomExtensionsMethods
+    {
+        public static IServiceCollection AddRabbitMQ(this IServiceCollection services, IConfiguration configuration)
+        {
+           
+
+            return services;
+        }
+    }
+
+
 }
