@@ -26,6 +26,7 @@ namespace DDDRabbitMQ
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddRabbitMQ(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +45,17 @@ namespace DDDRabbitMQ
     {
         public static IServiceCollection AddRabbitMQ(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddSingleton<IRabbitMQPersistentConnection>( sp =>  
+            {
+                var logger = sp.GetRequiredService<ILogger<MQ.DefaultConnection>>();
+                var factory = new ConnectionFactory()
+                {
+                    HostName = "localhost",
+                    UserName = "guest",
+                    Password = "guest"
+                };
+                return new MQ.DefaultConnection(factory, logger);
+            });
            
 
             return services;
