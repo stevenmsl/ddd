@@ -11,7 +11,7 @@ namespace DDDEventBus
     {
         bool IsEmpty { get; }
         event EventHandler<string> OnEventRemoved;
-        void AddDynamicSubscription<TH>(string evenName)
+        void AddDynamicSubscription<TH>(string eventName)
             where TH : IDynamicIntegrationEventHandler;
         void AddSubscription<T, TH>()
             where T : IntegrationEvent
