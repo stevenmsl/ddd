@@ -67,14 +67,11 @@ namespace DDDEventBus
 
         public IEnumerable<SubscriptionInfo> GetHandlersForEvent<T>() where T : IntegrationEvent
         {
-            throw new NotImplementedException();
+            return GetHandlersForEvent(GetEventKey<T>());
         }
 
-        public IEnumerable<SubscriptionInfo> GetHandlersForEvent(string eventName)
-        {
-            throw new NotImplementedException();
-        }
-
+        public IEnumerable<SubscriptionInfo> GetHandlersForEvent(string eventName) => _handlers[eventName];
+        
         public bool HasSubscriptionsForEvent<T>() where T : IntegrationEvent
             => HasSubscriptionsForEvent(GetEventKey<T>());
 
