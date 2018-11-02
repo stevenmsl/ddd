@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using RabbitMQ.Client;
+//using RabbitMQ.Client;
 
 namespace DDDRabbitMQ
 {
@@ -45,17 +45,17 @@ namespace DDDRabbitMQ
     {
         public static IServiceCollection AddRabbitMQ(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSingleton<IRabbitMQPersistentConnection>( sp =>  
-            {
-                var logger = sp.GetRequiredService<ILogger<MQ.DefaultConnection>>();
-                var factory = new ConnectionFactory()
-                {
-                    HostName = "localhost",
-                    UserName = "guest",
-                    Password = "guest"
-                };
-                return new MQ.DefaultConnection(factory, logger);
-            });
+            //services.AddSingleton<IRabbitMQPersistentConnection>( sp =>  
+            //{
+            //    var logger = sp.GetRequiredService<ILogger<MQ.DefaultConnection>>();
+            //    var factory = new ConnectionFactory()
+            //    {
+            //        HostName = "localhost",
+            //        UserName = "guest",
+            //        Password = "guest"
+            //    };
+            //    return new MQ.DefaultConnection(factory, logger);
+            //});
            
 
             return services;

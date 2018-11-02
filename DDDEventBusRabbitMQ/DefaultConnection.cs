@@ -3,7 +3,7 @@ using System.IO;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 
-namespace DDDRabbitMQ.MQ
+namespace DDDEventBusRabbitMQ
 {
     public class DefaultConnection : IRabbitMQPersistentConnection
     {
