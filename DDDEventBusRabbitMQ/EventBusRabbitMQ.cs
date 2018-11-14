@@ -160,6 +160,7 @@ namespace DDDEventBusRabbitMQ
         {
             if (_subsManager.HasSubscriptionsForEvent(eventName))
             {
+                //Autofac recommends resolve a service from a lifetime scope instead of from the root container to avoid potential memory leak.
                 using (var scope = _autofac.BeginLifetimeScope(AUTOFACT_SCOPE_NAME))
                 {
                     var subs = _subsManager.GetHandlersForEvent(eventName);
@@ -167,15 +168,20 @@ namespace DDDEventBusRabbitMQ
                     {
                         if (sub.IsDynamic)
                         {
+                            //Also a service may or may not registered, use conditional resolution methods such as ResolveOptional to resolve a service.    
+                            //It is dynamic, so you don’t really have a event type per se. You can only cast the handler to IDynamicIntegrationEventHandler  
                             var handler = scope.ResolveOptional(sub.HandlerType) as IDynamicIntegrationEventHandler;
                             dynamic eventData = JObject.Parse(message);
                             await handler.Handle(eventData);
                         }
                         else
                         {
+                            //The local variable eventType here is an instance of Type. You can’t use it in type casting directly; 
+                            //you need to use reflection. 
                             var eventType = _subsManager.GetEventTypeByName(eventName);
                             var integrationEvent = JsonConvert.DeserializeObject(message, eventType);
                             var handler = scope.ResolveOptional(sub.HandlerType);
+                            //Create an instance of a generic Type – the type of the event handler
                             var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
                             await (Task)concreteType.GetMethod("Handle").Invoke(handler, new object[] { integrationEvent });
                         }
