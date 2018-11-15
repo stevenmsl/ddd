@@ -33,7 +33,7 @@ namespace DDDEventBusRabbitMQ
             ILifetimeScope autofac,
             IEventBusSubscriptionsManager subsManager, string queueName = null)
         {
-            _persistentConnection = persistentConnection;
+            _persistentConnection = persistentConnection ?? throw new ArgumentNullException(nameof(persistentConnection));
             _logger = logger ?? throw new ArgumentException(nameof(logger));
             _subsManager = subsManager ?? new InMemoryEventBusSubscriptionsManager();
             _queueName = queueName;
@@ -74,9 +74,41 @@ namespace DDDEventBusRabbitMQ
             var channel = _persistentConnection.CreateModel();
             channel.ExchangeDeclare(exchange: BROKER_NAME, type: "direct");
 
+            channel.QueueDeclare(
+                queue: _queueName,
+                durable: true,
+                exclusive: false,
+                autoDelete: false,
+                arguments: null
+                );
+
+            var consumer = new EventingBasicConsumer(channel);
+
+            consumer.Received += async (model, ea) =>
+            {
+                var eventName = ea.RoutingKey;
+                var message = Encoding.UTF8.GetString(ea.Body);
+
+                await processEvent(eventName, message);
+
+                channel.BasicAck(ea.DeliveryTag, multiple: false);
+            };
+
+            channel.BasicConsume(queue: _queueName,
+                autoAck: false,
+                consumer: consumer
+                );
+
+
+            channel.CallbackException += (sender, ea) =>
+            {
+                _consumerChannel.Dispose();
+                _consumerChannel = createConsumerChannel();
+            };
 
             return channel;
         }
+
 
         public void Dispose()
         {
