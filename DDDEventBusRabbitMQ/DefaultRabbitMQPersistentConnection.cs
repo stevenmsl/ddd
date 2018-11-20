@@ -5,16 +5,16 @@ using RabbitMQ.Client;
 
 namespace DDDEventBusRabbitMQ
 {
-    public class DefaultConnection : IRabbitMQPersistentConnection
+    public class DefaultRabbitMQPersistentConnection : IRabbitMQPersistentConnection
     {
         private readonly IConnectionFactory _connectionFactory;
-        private readonly ILogger<DefaultConnection> _logger;
+        private readonly ILogger<DefaultRabbitMQPersistentConnection> _logger;
         IConnection _connection;
         bool _disposed;
         object sync_root = new object();
 
-        public DefaultConnection(IConnectionFactory connectionFactory,
-            ILogger<DefaultConnection> logger)
+        public DefaultRabbitMQPersistentConnection(IConnectionFactory connectionFactory,
+            ILogger<DefaultRabbitMQPersistentConnection> logger)
         {
             _connectionFactory = connectionFactory ?? throw new ArgumentException(nameof(connectionFactory));
             _logger = logger ?? throw new ArgumentException(nameof(logger));

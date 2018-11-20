@@ -11,7 +11,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-//using RabbitMQ.Client;
+using RabbitMQ.Client;
+using DDDEventBus.Abstractions;
+using DDDEventBus;
+using DDDEventBusRabbitMQ;
 
 namespace DDDRabbitMQ
 {
@@ -28,7 +31,9 @@ namespace DDDRabbitMQ
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddRabbitMQ(Configuration);
+
+            
+            services.RegisterEventBus(Configuration);
 
             var container = new ContainerBuilder();
             container.Populate(services);
@@ -50,22 +55,33 @@ namespace DDDRabbitMQ
 
     static class CustomExtensionsMethods
     {
-        public static IServiceCollection AddRabbitMQ(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection RegisterEventBus(this IServiceCollection services, IConfiguration configuration)
         {
-            //services.AddSingleton<IRabbitMQPersistentConnection>( sp =>  
-            //{
-            //    var logger = sp.GetRequiredService<ILogger<MQ.DefaultConnection>>();
-            //    var factory = new ConnectionFactory()
-            //    {
-            //        HostName = "localhost",
-            //        UserName = "guest",
-            //        Password = "guest"
-            //    };
-            //    return new MQ.DefaultConnection(factory, logger);
-            //});
-           
+            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
 
-            return services;
+            services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
+            {
+                var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
+                var factory = new ConnectionFactory()
+                {
+                    HostName = "localhost",
+                    UserName = "guest",
+                    Password = "guest"
+
+                };
+                return new DefaultRabbitMQPersistentConnection(factory, logger);
+            });
+            services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
+            {
+                var conn = sp.GetRequiredService<IRabbitMQPersistentConnection>();
+                var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+                var logger = sp.GetRequiredService <ILogger<EventBusRabbitMQ>>();
+                var subsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+
+                return new EventBusRabbitMQ(conn, logger, iLifetimeScope, subsManager, "DDDRabbitMQ");
+            });
+
+           return services;
         }
     }
 
