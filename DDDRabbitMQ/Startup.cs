@@ -16,7 +16,7 @@ using DDDEventBus.Abstractions;
 using DDDEventBus;
 using DDDEventBusRabbitMQ;
 
-namespace DDDRabbitMQ
+namespace DDDIEPublisher
 {
     public class Startup
     {

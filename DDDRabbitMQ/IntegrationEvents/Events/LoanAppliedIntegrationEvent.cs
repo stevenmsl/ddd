@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DDDEventBus.Events;
 
-namespace DDDRabbitMQ.IntegrationEvents.Events
+namespace DDDIEPublisher.IntegrationEvents.Events
 {
     public class LoanAppliedIntegrationEvent : IntegrationEvent
     {
