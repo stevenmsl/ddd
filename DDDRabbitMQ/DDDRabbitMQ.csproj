@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="IntegrationEvents\EventHandling\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
