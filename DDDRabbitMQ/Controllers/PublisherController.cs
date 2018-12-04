@@ -22,10 +22,17 @@ namespace DDDIEPublisher.Controllers
             _eventBus = eventBus;
         }
 
+        [HttpGet("init")]
+        public ActionResult<string> Init()
+        {
+            return "done";
+        }
+
         [HttpGet("publish/{command}")]
         public ActionResult<string> Publish(string command)
         {
             var eventMessage = new LoanAppliedIntegrationEvent(Guid.NewGuid().ToString());
+
 
             _eventBus.Publish(eventMessage);
 
