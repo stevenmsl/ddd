@@ -28,6 +28,9 @@ namespace DDDEventBus
         IEnumerable<SubscriptionInfo> GetHandlersForEvent<T>() where T : IntegrationEvent;
         IEnumerable<SubscriptionInfo> GetHandlersForEvent(string eventName);
         string GetEventKey<T>();
+        //Use this method if you only want to publish events not receiving them. Use add subscription methods if you want to both publish and receive events
+        void RegisterEvent<T>() where T : IntegrationEvent;
+        void UnRegisterEvent<T>() where T : IntegrationEvent; 
 
     }
 }

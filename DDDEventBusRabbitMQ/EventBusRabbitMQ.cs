@@ -38,7 +38,7 @@ namespace DDDEventBusRabbitMQ
             _subsManager = subsManager ?? new InMemoryEventBusSubscriptionsManager();
             _queueName = queueName;
             _autofac = autofac;
-            _consumerChannel = createConsumerChannel();
+           _consumerChannel = createConsumerChannel(false);
             _subsManager.OnEventRemoved += subsManager_OnEventRemoved;
 
         }
@@ -65,7 +65,7 @@ namespace DDDEventBusRabbitMQ
            
         }
 
-        private IModel createConsumerChannel()
+        private IModel createConsumerChannel(bool createDefaultConsumer = true)
         {
             if (!_persistentConnection.IsConnected)
             {
@@ -82,29 +82,33 @@ namespace DDDEventBusRabbitMQ
                 arguments: null
                 );
 
-            var consumer = new EventingBasicConsumer(channel);
-
-            consumer.Received += async (model, ea) =>
+            #region default consumer
+            if (createDefaultConsumer)
             {
-                var eventName = ea.RoutingKey;
-                var message = Encoding.UTF8.GetString(ea.Body);
+                var consumer = new EventingBasicConsumer(channel);
 
-                await processEvent(eventName, message);
+                consumer.Received += async (model, ea) =>
+                {
+                    var eventName = ea.RoutingKey;
+                    var message = Encoding.UTF8.GetString(ea.Body);
 
-                channel.BasicAck(ea.DeliveryTag, multiple: false);
-            };
+                    await processEvent(eventName, message);
 
-            channel.BasicConsume(queue: _queueName,
-                autoAck: false,
-                consumer: consumer
-                );
+                    channel.BasicAck(ea.DeliveryTag, multiple: false);
+                };
 
+                channel.BasicConsume(queue: _queueName,
+                    autoAck: false,
+                    consumer: consumer
+                    );
 
-            channel.CallbackException += (sender, ea) =>
-            {
-                _consumerChannel.Dispose();
-                _consumerChannel = createConsumerChannel();
-            };
+                channel.CallbackException += (sender, ea) =>
+                {
+                    _consumerChannel.Dispose();
+                    _consumerChannel = createConsumerChannel();
+                };
+            }
+            #endregion
 
             return channel;
         }
@@ -177,14 +181,7 @@ namespace DDDEventBusRabbitMQ
         {
             if (!_subsManager.HasSubscriptionsForEvent(eventName))
             {
-                using (var channel = _persistentConnection.CreateModel())
-                {
-                    channel.QueueBind(
-                        queue: _queueName,
-                        exchange: BROKER_NAME,
-                        routingKey: eventName
-                    );
-                }
+                createBinding(eventName);
             }
         }
 
@@ -221,6 +218,31 @@ namespace DDDEventBusRabbitMQ
                 }
             
             }
+        }
+
+        public void Register<T>() where T : IntegrationEvent
+        {
+            _subsManager.RegisterEvent<T>();
+            createBinding(typeof(T).Name);
+        }
+
+        public void UnRegister<T>() where T : IntegrationEvent
+        {
+            _subsManager.UnRegisterEvent<T>();
+        }
+
+        //Create binding by using the event name as the routing key. 
+        //Once the binding is created events can then be delivered to the specified queue by the exchange.
+        private void createBinding(string eventName) 
+        {
+                using (var channel = _persistentConnection.CreateModel())
+                {
+                    channel.QueueBind(
+                        queue: _queueName,
+                        exchange: BROKER_NAME,
+                        routingKey: eventName
+                    );
+                }
         }
     }
 }

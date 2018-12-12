@@ -15,6 +15,7 @@ using RabbitMQ.Client;
 using DDDEventBus.Abstractions;
 using DDDEventBus;
 using DDDEventBusRabbitMQ;
+using DDDIEPublisher.IntegrationEvents.Events;
 
 namespace DDDIEPublisher
 {
@@ -50,6 +51,7 @@ namespace DDDIEPublisher
             }
 
             app.UseMvc();
+            app.ConfigureEventBus();
         }
     }
 
@@ -82,7 +84,18 @@ namespace DDDIEPublisher
             });
 
            return services;
+        } 
+        
+        public static void ConfigureEventBus(this IApplicationBuilder app)
+        {
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            //From Rabbit MQ perspective, this will create a binding from the exchange to the queue using LoanAppliedIntegrationEvent 
+            //as the routing key.
+            eventBus.Register<LoanAppliedIntegrationEvent>();
+
         }
+
+
     }
 
 

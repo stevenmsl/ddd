@@ -18,6 +18,12 @@ namespace DDDEventBus.Abstractions
             where TH : IDynamicIntegrationEventHandler;
         void UnsubscribeDynamic<TH>(string eventName)
             where TH : IDynamicIntegrationEventHandler;
+        /// <summary>
+        /// Register an event type so later events of the specified event type can be published.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        void Register<T>() where T : IntegrationEvent;
+        void UnRegister<T>() where T : IntegrationEvent;
 
     }
 }

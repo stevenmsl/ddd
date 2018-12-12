@@ -93,6 +93,27 @@ namespace DDDEventBus
             doRemoveHandler(GetEventKey<T>(), findSubsToRemove<T, TH>());
         }
 
+        public void RegisterEvent<T>() where T : IntegrationEvent
+        {
+            var type = typeof(T);
+
+            if (_eventTypes.SingleOrDefault(e => e.Name == type.Name) != null)
+            {
+                _eventTypes.Add(type);
+            }
+            
+        }
+
+        public void UnRegisterEvent<T>() where T : IntegrationEvent
+        {
+            var type = _eventTypes.SingleOrDefault(e => e.Name == typeof(T).Name);
+            if (type != null)
+            {
+                _eventTypes.Remove(type);
+            }
+            raiseOnEventRemoved(type.Name);
+        }
+
         #region private methods to support removal of subscriptions
         private void doRemoveHandler(string eventName, SubscriptionInfo subsToRemove)
         {
@@ -128,8 +149,9 @@ namespace DDDEventBus
             return _handlers[eventName].SingleOrDefault(s => s.HandlerType == handlerType);
         }
 
-        #endregion
 
+
+        #endregion
 
 
 
