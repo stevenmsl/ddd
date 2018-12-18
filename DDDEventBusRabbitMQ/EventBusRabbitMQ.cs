@@ -29,6 +29,12 @@ namespace DDDEventBusRabbitMQ
         private IModel _consumerChannel;
         private string _queueName;
 
+        /*
+         If you want to deliver the same message (event) to many consumers (systems), 
+         each consumer should have its own queue with the same routing key (name of the integration event) to receive the same message. 
+         The messages are published to an exchange but not individual queues. An exchange then delivers messages based on the bindings (routings).       
+        */
+
         public EventBusRabbitMQ(IRabbitMQPersistentConnection persistentConnection, ILogger<EventBusRabbitMQ> logger,
             ILifetimeScope autofac,
             IEventBusSubscriptionsManager subsManager, string queueName = null)
@@ -38,7 +44,7 @@ namespace DDDEventBusRabbitMQ
             _subsManager = subsManager ?? new InMemoryEventBusSubscriptionsManager();
             _queueName = queueName;
             _autofac = autofac;
-           _consumerChannel = createConsumerChannel(false);
+           _consumerChannel = createConsumerChannel(true); //This is where you deliver the arrived events to the subscribers
             _subsManager.OnEventRemoved += subsManager_OnEventRemoved;
 
         }
@@ -91,7 +97,8 @@ namespace DDDEventBusRabbitMQ
                 {
                     var eventName = ea.RoutingKey;
                     var message = Encoding.UTF8.GetString(ea.Body);
-
+                    //this is where you deliver the arrived events to the subscribers
+                    //You do so by invoking individual event handlers
                     await processEvent(eventName, message);
 
                     channel.BasicAck(ea.DeliveryTag, multiple: false);
