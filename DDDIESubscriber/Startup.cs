@@ -4,20 +4,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using RabbitMQ.Client;
-using DDDEventBus.Abstractions;
 using DDDEventBus;
 using DDDEventBusRabbitMQ;
-using DDDIEPublisher.IntegrationEvents.Events;
+using DDDIESubscriber.IntegrationEvents.Events;
+using DDDEventBus.Abstractions;
 
-namespace DDDIEPublisher
+using DDDIESubscriber.IntegrationEvents.EventHandling;
+using RabbitMQ.Client;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+
+namespace DDDIESubscriber
 {
     public class Startup
     {
@@ -33,13 +36,13 @@ namespace DDDIEPublisher
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            
             services.RegisterEventBus(Configuration);
 
             var container = new ContainerBuilder();
             container.Populate(services);
 
             return new AutofacServiceProvider(container.Build());
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,7 +52,12 @@ namespace DDDIEPublisher
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseHsts();
+            }
 
+            app.UseHttpsRedirection();
             app.UseMvc();
             app.ConfigureEventBus();
         }
@@ -77,25 +85,25 @@ namespace DDDIEPublisher
             {
                 var conn = sp.GetRequiredService<IRabbitMQPersistentConnection>();
                 var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
-                var logger = sp.GetRequiredService <ILogger<EventBusRabbitMQ>>();
+                var logger = sp.GetRequiredService<ILogger<EventBusRabbitMQ>>();
                 var subsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
 
-                return new EventBusRabbitMQ(conn, logger, iLifetimeScope, subsManager, "DDDRabbitMQ");
+                return new EventBusRabbitMQ(conn, logger, iLifetimeScope, subsManager, 
+                    queueName: "DDDIESubscriber" /* have my own queue to receive messages */);
             });
 
-            //
-            services.AddTransient<LoanAppliedIntegrationEvent>();
+            //add integration event handlers as services
+            services.AddTransient<LoanAppliedIntegrationEventHandler>();
 
-           return services;
-        } 
-        
+            return services;
+        }
+
         public static void ConfigureEventBus(this IApplicationBuilder app)
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-            //From Rabbit MQ perspective, this will create a binding from the exchange to the queue using LoanAppliedIntegrationEvent 
+            //From Rabbit MQ perspective, this will create a binding between the exchange and the queue using LoanAppliedIntegrationEvent 
             //as the routing key.
-            eventBus.Register<LoanAppliedIntegrationEvent>();
-
+            eventBus.Subscribe<LoanAppliedIntegrationEvent,LoanAppliedIntegrationEventHandler>();
         }
 
 
