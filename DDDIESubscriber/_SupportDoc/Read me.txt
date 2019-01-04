@@ -1,0 +1,5 @@
+﻿-	In Set Startup Projects…, Set action to Start on both DDDIESubscriber and DDDIEPublisher.
+-	Run the solution
+-	Use is Url http://localhost:60483/api/publisher/publish/test to publish an event
+-	You should be able to see a message like the following in the VS Output window
+	DDDIESubscriber.IntegrationEvents.EventHandling.LoanAppliedIntegrationEventHandler:Information: LoanAppliedIntegrationEvent received: ba25c942-c5d9-471b-ba95-e523be880b95

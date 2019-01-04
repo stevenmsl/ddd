@@ -80,11 +80,9 @@ namespace DDDIEPublisher
                 var logger = sp.GetRequiredService <ILogger<EventBusRabbitMQ>>();
                 var subsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
 
-                return new EventBusRabbitMQ(conn, logger, iLifetimeScope, subsManager, "DDDRabbitMQ");
+                return new EventBusRabbitMQ(conn, logger, iLifetimeScope, subsManager, "DDDIEPublisher");
             });
-
-            //
-            services.AddTransient<LoanAppliedIntegrationEvent>();
+                      
 
            return services;
         } 
