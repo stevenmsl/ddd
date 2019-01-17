@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDDEventBus", "DDDEventBus\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDDEventBusRabbitMQ", "DDDEventBusRabbitMQ\DDDEventBusRabbitMQ.csproj", "{09986189-365E-478B-973F-8D0A6E6FEA60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDDIESubscriber", "DDDIESubscriber\DDDIESubscriber.csproj", "{41FBD13F-9403-4F0B-A60C-08E73B2CCC38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDDIESubscriber", "DDDIESubscriber\DDDIESubscriber.csproj", "{41FBD13F-9403-4F0B-A60C-08E73B2CCC38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDDOcelot", "DDDOcelot\DDDOcelot.csproj", "{78C994E2-52DD-4A0B-A34A-7A2894B3A585}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,10 @@ Global
 		{41FBD13F-9403-4F0B-A60C-08E73B2CCC38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41FBD13F-9403-4F0B-A60C-08E73B2CCC38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41FBD13F-9403-4F0B-A60C-08E73B2CCC38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78C994E2-52DD-4A0B-A34A-7A2894B3A585}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78C994E2-52DD-4A0B-A34A-7A2894B3A585}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78C994E2-52DD-4A0B-A34A-7A2894B3A585}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78C994E2-52DD-4A0B-A34A-7A2894B3A585}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
