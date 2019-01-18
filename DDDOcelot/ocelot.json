@@ -1,6 +1,6 @@
 {
   "ReRoutes": [],
   "GlobalConfiguration": {
-    "BaseUrl": "https://api.mybusiness.com"
+    "BaseUrl": "http://localhost:50886"
   }
 }
